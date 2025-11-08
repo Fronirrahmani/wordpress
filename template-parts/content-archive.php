@@ -6,3 +6,10 @@
         <h3 class="tittle mb-1">
             <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
 </h3>
+<div class="meta mb-1">
+    <span class="date">
+        <?php
+        echo get_the_date();
+        ?>
+    </span>
+</div>
