@@ -113,3 +113,20 @@ function wp_adv_nav_menu_item_title($title, $item, $args, $depth)
     return $title;
 }
 add_filter('nav_menu_item_title', 'wp_adv_nav_menu_item_title', 10, 4);
+
+
+function wp_adv_nav_menu_item_title($title, $item, $args,depth){
+    $icon_class = '';
+    foreach($item->classes as $c){
+        if(strops ($c, 'fa-')=== 0 || strops($c, 'fab-')=== 0 ||  strops($c, 'fas-')=== 0){
+            $icon_class =$c;
+            break;
+
+        }
+
+    }
+   if (icon_class){
+    $title='<i class"'. esc_attr($icon_class). 'fa-fw mr-2'><</i>' . $title;
+   }}
+
+   
