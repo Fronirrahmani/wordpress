@@ -7,6 +7,7 @@ function wp_adv_theme_support()
 }
 add_action('after_setup_theme', 'wp_adv_theme_support');
 
+
 function wp_adv_menus()
 {
     $locations = [
@@ -16,7 +17,9 @@ function wp_adv_menus()
     register_nav_menus($locations);
 }
 
+
 add_action('init', 'wp_adv_menus');
+
 
 function wp_adv_register_styles()
 {
@@ -43,7 +46,9 @@ function wp_adv_register_styles()
     );
 }
 
+
 add_action('wp_enqueue_scripts', 'wp_adv_register_styles');
+
 
 function wp_adv_register_scripts()
 {
@@ -63,7 +68,9 @@ function wp_adv_register_scripts()
     );
 }
 
+
 add_action('wp_enqueue_scripts', 'wp_adv_register_scripts');
+
 
 function wp_adv_nav_menu_li_class($classes, $item, $args, $depth)
 {
@@ -74,9 +81,11 @@ function wp_adv_nav_menu_li_class($classes, $item, $args, $depth)
         }
     }
 
+
     return $classes;
 }
 add_filter('nav_menu_css_class', 'wp_adv_nav_menu_li_class', 10, 4);
+
 
 function wp_adv_nav_menu_link_atts($atts, $item, $args, $depth)
 {
@@ -84,15 +93,19 @@ function wp_adv_nav_menu_link_atts($atts, $item, $args, $depth)
         $existing      = isset($atts['class']) ? $atts['class'] . ' ' : '';
         $atts['class'] = trim($existing . 'nav-link');
 
+
         $title = strtolower(trim($item->title));
         if (strpos($title, 'contact') !== false || in_array('contact', $item->classes)) {
             $atts['class'] .= ' btn btn-primary';
         }
     }
 
+
+
     return $atts;
 }
 add_filter('nav_menu_link_attributes', 'wp_adv_nav_menu_link_atts', 10, 4);
+
 
 function wp_adv_nav_menu_item_title($title, $item, $args, $depth)
 {
@@ -105,28 +118,52 @@ function wp_adv_nav_menu_item_title($title, $item, $args, $depth)
             }
         }
 
+
         if ($icon_class) {
             $title = '<i class="' . esc_attr($icon_class) . ' fa-fw mr-2"></i>' . $title;
         }
     }
+
 
     return $title;
 }
 add_filter('nav_menu_item_title', 'wp_adv_nav_menu_item_title', 10, 4);
 
 
-function wp_adv_nav_menu_item_title($title, $item, $args,depth){
-    $icon_class = '';
-    foreach($item->classes as $c){
-        if(strops ($c, 'fa-')=== 0 || strops($c, 'fab-')=== 0 ||  strops($c, 'fas-')=== 0){
-            $icon_class =$c;
-            break;
+function wp_adv_widget_areas() {
+    register_sidebar(
+        [
+        'name' => 'Sidebar Area',
+        'id' => 'sidebar-1',
+        'description' => 'Sidebar Widget Area',
+        'before_widget' => '<div class="widget %2$s mb-4">',
+        'after_widget' => '</div>',
+        'before_widget' => '<h3 class="widget-title mb-3">',
+        'after_widget' => '</h3>',
+        ]
+    );
+    register_sidebar(
+        [
+        'name' => 'Footer Area',
+        'id' => 'footer-1',
+        'description' => 'footer Widget Area',
+        'before_widget' => '<div class="widget %2$s mb-4">',
+        'after_widget' => '</div>',
+        'before_widget' => '<h3 class="widget-title mb-3">',
+        'after_widget' => '</h3>',
+        ]
+        );
+}
+add_action('widgets_init', 'wp_adv_widget_areas');
 
-        }
 
-    }
-   if (icon_class){
-    $title='<i class"'. esc_attr($icon_class). 'fa-fw mr-2'><</i>' . $title;
-   }}
-
-   
+function wp_adv_fallback_menu(){
+    $home = esc_url(home_url('/'));
+    echo '<ul class="navbar-nav flex-column text-sm-center text-md-left">';
+    echo '<li class="nav-item><a class="nav-link" href="' .$home . '"><i class="fas fa-home fa-fw mr-2"></i>'. esc_html__('Home', 'wp-adv1') . '</a></li>';
+    echo '<li class="nav-item><a class="nav-link" href="#"><i class="fas fa-file-alt fa-fw mr-2"></i>'. esc_html__('Blog Post', 'wp-adv1') . '</a></li>';
+    echo '<li class="nav-item><a class="nav-link" href="#"><i class="fas fa-file-image fa-fw mr-2"></i>'. esc_html__('Page', 'wp-adv1') . '</a></li>';
+    echo '<li class="nav-item><a class="nav-link" href="#"><i class="fas fa-archive fa-fw mr-2"></i>'. esc_html__('Archive', 'wp-adv1') . '</a></li>';
+    echo '<li class="nav-item><a class="nav-link btn btn-primary" href="#"><i class="fas fa-envelope fa-fw mr-2"></i>'. esc_html__('Contact', 'wp-adv1') . '</a></li>';
+    echo '</ul>';
+}
